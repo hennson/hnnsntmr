@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⏲ HNNSNTMR</title>
+    <style>
+        :root {
+            --accent: #f39;
+            --dark: #434343;
+            --light: #fff;
+            --frame: #2c2c2c;
+        }
+
+        body {
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--light);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+
+        body.dark {
+            --dark: #f0f2f3;
+            --light: #38444c;
+            --frame: #f8f8f8;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          :root {
+            --dark: #f0f2f3;
+            --light: #38444c;
+            --frame: #f8f8f8;
+          }
+        }
+
+        .time-timer {
+            position: relative;
+            width: 21.25rem;
+            height: 21.25rem;
+            border-radius: 3.125rem;
+            border: 1.25rem solid var(--frame);
+            background-color: var(--light);
+            cursor: pointer;
+        }
+
+        @media (min-width: 576px) { 
+            .time-timer {
+                width: 25rem;
+                height: 25rem;
+            }
+        }
+
+
+        .blink {
+            animation: blink 1s linear infinite;
+        }
+
+        @keyframes blink {
+            0%,
+            100% {
+                background-color: var(--light);
+            }
+
+            50% {
+                background-color: var(--accent);
+            }
+        }
+
+        .time-timer .title {
+            display: none;
+        }
+
+        @media (min-width: 576px) { 
+            .time-timer .title {
+                display: none;
+                position: absolute;
+                right: 6%;
+                bottom: 1%;
+                margin: 0;
+                font-size: 1.25rem;
+                font-weight: normal;
+                text-align: center;
+                text-transform: uppercase;
+                color: var(--dark);
+            }
+        }
+
+        .time-timer .minute {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .time-timer .minute>div {
+            position: absolute;
+            width: 3.125rem;
+            height: 3.125rem;
+            font-size: 1.875rem;
+            font-weight: bold;
+            line-height: 3.125rem;
+            text-align: center;
+        }
+
+        .time-timer .minute>div::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: -5rem;
+            margin-left: -.125rempx;
+            width: .25rem;
+            height: 1.25rem;
+            background-color: var(--dark);
+        }
+
+        .time-timer .minute>div span {
+            position: relative;
+            top: -8.75rem;
+            display: block;
+            color: var(--dark);
+        }
+
+        #remain-time {
+            width: 11.25rem;
+            height: 11.25rem;
+        }
+
+        @media (min-width: 576px) { 
+            .time-timer .minute>div::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: -6.25rem;
+                margin-left: -.125rem;
+                width: .25rem;
+                height: 1.25rem;
+                background-color: var(--dark);
+            }
+
+            .time-timer .minute>div span {
+                position: relative;
+                top: -10rem;
+                display: block;
+                color: var(--dark);
+            }
+
+            #remain-time {
+                width: 13.75rem;
+                height: 13.75rem;
+            }
+        }
+
+        .time-timer .minute>div span::after {
+            content: attr(data-minute);
+        }
+
+        .time-timer .minute>div.min0 {
+            transform: rotate(0deg);
+        }
+
+        .time-timer .minute>div.min0 span {
+            transform: rotate(0deg);
+        }
+
+        .time-timer .minute>div.min5 {
+            transform: rotate(-30deg);
+        }
+
+        .time-timer .minute>div.min5 span {
+            transform: rotate(30deg);
+        }
+
+        .time-timer .minute>div.min10 {
+            transform: rotate(-60deg);
+        }
+
+        .time-timer .minute>div.min10 span {
+            transform: rotate(60deg);
+        }
+
+        .time-timer .minute>div.min15 {
+            transform: rotate(-90deg);
+        }
+
+        .time-timer .minute>div.min15 span {
+            transform: rotate(90deg);
+        }
+
+        .time-timer .minute>div.min20 {
+            transform: rotate(-120deg);
+        }
+
+        .time-timer .minute>div.min20 span {
+            transform: rotate(120deg);
+        }
+
+        .time-timer .minute>div.min25 {
+            transform: rotate(-150deg);
+        }
+
+        .time-timer .minute>div.min25 span {
+            transform: rotate(150deg);
+        }
+
+        .time-timer .minute>div.min30 {
+            transform: rotate(-180deg);
+        }
+
+        .time-timer .minute>div.min30 span {
+            transform: rotate(180deg);
+        }
+
+        .time-timer .minute>div.min35 {
+            transform: rotate(-210deg);
+        }
+
+        .time-timer .minute>div.min35 span {
+            transform: rotate(210deg);
+        }
+
+        .time-timer .minute>div.min40 {
+            transform: rotate(-240deg);
+        }
+
+        .time-timer .minute>div.min40 span {
+            transform: rotate(240deg);
+        }
+
+        .time-timer .minute>div.min45 {
+            transform: rotate(-270deg);
+        }
+
+        .time-timer .minute>div.min45 span {
+            transform: rotate(270deg);
+        }
+
+        .time-timer .minute>div.min50 {
+            transform: rotate(-300deg);
+        }
+
+        .time-timer .minute>div.min50 span {
+            transform: rotate(300deg);
+        }
+
+        .time-timer .minute>div.min55 {
+            transform: rotate(-330deg);
+        }
+
+        .time-timer .minute>div.min55 span {
+            transform: rotate(330deg);
+        }
+
+        .time-timer canvas {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        .controller {
+            margin-top: 2.5rem;
+            color: var(--dark);
+        }
+
+        .controller .label {
+            margin: 0 0 .5rem 0;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .controller button {
+            width: 3.125rem;
+            height: 3.125rem;
+            font-size: 1.875rem;
+            fill: var(--dark);
+            background-color: transparent;
+            border: 0;
+            cursor: pointer;
+            outline: none;
+            transition: color .3s ease-in-out;
+        }
+
+        .controller button:active {
+            color: var(--accent);
+        }
+
+        .controller .buttons {
+            float: left;
+            width: 50%;
+            text-align: center;
+        }
+
+        .controller .setting {
+            float: right;
+            width: 50%;
+            text-align: center;
+        }
+
+        .controller .setting .number {
+            display: inline-block;
+            width: 2.5rem;
+            font-size: 1.875rem;
+            padding-left: .25rem;
+        }
+
+        @media (min-width: 36rem) { 
+            .controller .setting .number {
+                width: 5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="time-timer">
+            <h1 class="title">Hnnsn <strong>Tmr</strong></h1>
+            <div class="minute">
+                <div class="min0"><span data-minute="0"></span></div>
+                <div class="min5"><span data-minute="5"></span></div>
+                <div class="min10"><span data-minute="10"></span></div>
+                <div class="min15"><span data-minute="15"></span></div>
+                <div class="min20"><span data-minute="20"></span></div>
+                <div class="min25"><span data-minute="25"></span></div>
+                <div class="min30"><span data-minute="30"></span></div>
+                <div class="min35"><span data-minute="35"></span></div>
+                <div class="min40"><span data-minute="40"></span></div>
+                <div class="min45"><span data-minute="45"></span></div>
+                <div class="min50"><span data-minute="50"></span></div>
+                <div class="min55"><span data-minute="55"></span></div>
+            </div>
+            <audio id="audio" src="./sound/TimeTimer_AlertSound.wav"></audio>
+            <canvas id="remain-time" width="220" height="220"></canvas>
+        </div>
+        <div class="controller">
+            <div class="buttons">
+                <label class="label">controls</label>
+                <button id="btn-play" title="Start"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                        height="24">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path
+                            d="M19.376 12.416L8.777 19.482A.5.5 0 0 1 8 19.066V4.934a.5.5 0 0 1 .777-.416l10.599 7.066a.5.5 0 0 1 0 .832z" />
+                        </svg></button>
+                <button id="btn-pause" title="Pause"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                        height="24">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M6 5h2v14H6V5zm10 0h2v14h-2V5z" /></svg></button>
+                        <button id="btn-zero" title="Reset to Zero"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm0 2c-4.415 0-8 3.585-8 8s3.585 8 8 8 8-3.585 8-8-3.585-8-8-8zm0 2c2.761 0 5 2.686 5 6s-2.239 6-5 6-5-2.686-5-6 2.239-6 5-6zm2.325 3.472l-3.562 6.173c.377.228.796.355 1.237.355 1.657 0 3-1.79 3-4 0-.959-.253-1.839-.675-2.528zM12 8c-1.657 0-3 1.79-3 4 0 .959.253 1.839.675 2.528l3.562-6.173A2.377 2.377 0 0 0 12 8z"/></svg></button>
+                        <button id="btn-refresh" title="Reset to Value"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                        height="24">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path
+                            d="M18.537 19.567A9.961 9.961 0 0 1 12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10c0 2.136-.67 4.116-1.81 5.74L17 12h3a8 8 0 1 0-2.46 5.772l.997 1.795z" />
+                        </svg></button>
+            </div>
+            <div class="setting">
+                <label for="minute" class="label">set minutes</label>
+                <button id="btn-minus"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                        height="24">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M5 11h14v2H5z" /></svg></button>
+                <input onfocus="this.select();" max="60" min="0" type="number" id="minute" size="3" class="number" value="0" />
+                <button id="btn-plus"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                        height="24">
+                        <path fill="none" d="M0 0h24v24H0z" />
+                        <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" /></svg></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var btnPlay = document.querySelector('#btn-play'),
+            btnPause = document.querySelector('#btn-pause'),
+            btnRefresh = document.querySelector('#btn-refresh'),
+            btnZero = document.querySelector('#btn-zero'),
+            btnMinus = document.querySelector('#btn-minus'),
+            btnPlus = document.querySelector('#btn-plus'),
+            timetimer = document.querySelector('canvas'),
+            txtMinute = document.querySelector('#minute'),
+            defaultTitle = '⏲ HNNSNTMR',
+            allTicks =  document.querySelectorAll('[data-minute]');
+
+        var minute = 10,
+            remainTime,
+            timer,
+            timeLength = 1000,
+            run = false;
+
+        var canvas = document.getElementById('remain-time');
+        var ctx = canvas.getContext('2d');
+        ctx.strokeStyle = '#f39';
+        ctx.lineWidth = 140;
+        if (screen.width < 576){
+            ctx.lineWidth = 70;
+        }
+        
+
+        btnPause.style.display = 'none';
+        setMinutes();
+
+        btnMinus.addEventListener('click', clickMinus);
+        btnPlus.addEventListener('click', clickPlus);
+        btnPlay.addEventListener('click', clickPlay);
+        btnZero.addEventListener('click',clickZero);
+        timetimer.addEventListener('click', togglePlay);
+        btnPause.addEventListener('click', clickPause);
+        btnRefresh.addEventListener('click', clickRefresh);
+        txtMinute.addEventListener('change', keyupValue);
+        txtMinute.addEventListener('keyup', keyupValue);
+
+        allTicks.forEach(element => {
+            element.addEventListener('click', function (event) {
+                txtMinute.value = minute = element.dataset.minute;
+                setMinutes();
+            });
+        });
+
+        function setMinutes() {
+            txtMinute.value = minute;
+            remainTime = minute * 60;
+            if (minute >= 60) remainTime--;
+            drawArc();
+        }
+
+        function clickMinus() {
+            if (minute > 1) minute--;
+            clickPause();
+            setMinutes();
+        }
+
+        function clickPlus() {
+            if (minute < 60) minute++;
+            clickPause();
+            setMinutes();
+        }
+
+        function keyupValue() {
+            if(txtMinute.value === '') return;
+            let val = parseInt(txtMinute.value);
+            minute = (val < 0) ? val * -1 : val;
+            setMinutes();
+        }
+
+        function clickPlay() {
+            if (minute == '' || minute === 0) {
+                alert('Please set your time interval.');
+                return false;
+            }
+            run = true;
+            btnPlay.style.display = 'none';
+            btnPause.style.display = '';
+            timer = setInterval(runTimer, timeLength);
+        }
+
+        function togglePlay() {
+            if (minute === 0) return false;
+            run = !run;
+            if (run) {
+                btnPlay.style.display = 'none';
+                btnPause.style.display = '';
+                timer = setInterval(runTimer, timeLength);
+            } else {
+                btnPlay.style.display = '';
+                btnPause.style.display = 'none';
+                clearInterval(timer);
+                document.querySelector('body, .time-timer').classList.remove('blink');
+            }
+
+        }
+
+        function clickPause() {
+            run = false;
+            btnPlay.style.display = '';
+            btnPause.style.display = 'none';
+            clearInterval(timer);
+            document.querySelector('body, .time-timer').classList.remove('blink');
+        }
+
+        function clickRefresh() {
+            clickPause();
+            setMinutes();
+        }
+
+        function clickZero() {
+            clickPause();
+            minute = 0;
+            setMinutes();
+        }
+
+        function drawArc() {
+            var remainPercent = (60 * 60 - remainTime) / (60 * 60);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.arc(110, 110, 70, 1.5 * Math.PI + remainPercent * (2 * Math.PI), 1.5 * Math.PI);
+            ctx.stroke();
+        }
+
+        function runTimer() {
+            if (remainTime === 0) {
+                clearInterval(timer);
+                document.querySelector('body,.time-timer').classList.add('blink');
+                document.title = defaultTitle;
+                playSound()
+            } else {
+                remainTime--;
+                updateTitle(remainTime);
+                drawArc();
+            }
+        }
+
+        function updateTitle(time) {
+            document.title = `${defaultTitle} - ${toMinutesAndSeconds(time)}`;
+        }
+
+        function toMinutesAndSeconds(secs) {
+            const format = val => `0${Math.floor(val)}`.slice(-2);
+            const minutes = (secs % 3600) / 60;
+
+            return [minutes, secs % 60].map(format).join(':');
+        }
+
+        function playSound() {
+            var audio = document.getElementById('audio');
+            audio.play();
+        }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.ctrlKey && event.key === 'z') {
+                clickRefresh();
+            }
+        });
+
+    </script>
+</body>
+
+</html>
